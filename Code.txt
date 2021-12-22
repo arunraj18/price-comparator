@@ -1,0 +1,136 @@
+﻿from urllib.request import urlopen as uReq
+from bs4 import BeautifulSoup as soup
+
+
+def paytmMallMOBILE(key):
+    for x in range(1,3):
+        my_url ='https://paytmmall.com/shop/search?q=mobiles&from=organic&child_site_id=6&site_id=2&category=6224&page=1'+str(x)
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("div",{"class":"UGUy"})
+        container1 = page_soup.findAll("div",{"class":"_1kMS"})
+        
+        for i in range(len(container)):
+            if(key.lower() == container[i].text.split(" ")[0].lower()):
+                print("Paytm Mall Product:",container[i].text)
+                print("Paytm Mall price:",container1[i].text)
+            else:
+                pass
+        
+
+
+
+
+            
+def paytamMallTV(key):
+    for x in range(1,5):
+        my_url='https://paytmmall.com/shop/search?q=televisions&from=organic&child_site_id=6&site_id=2&category=24843&page='+str(x)
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("div",{"class":"UGUy"})
+        container1 = page_soup.findAll("div",{"class":"_1kMS"})
+        flag = True
+        for i in range(len(container)):
+            if(key.lower()==container[i].text.split(" ")[0].lower()):
+                flag = False
+                print("Paytm Mall Product:",container[i].text)
+                print("Paytm Mall price:",container1[i].text)
+            else:
+                pass
+        if flag == True:
+            print("No TV's Found with the given Product in Paytm Mall: ",key)
+            break
+
+
+def flipkartMOBILE(key):
+    for x in range(1,3):
+        my_url ='https://www.flipkart.com/search?q=mobiles&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off&page='+str(x)
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("div",{"class":"_3pLy-c row"})
+        container1 = page_soup.findAll("div",{"class":"_30jeq3 _1_WHN1"})
+        for i in range(len(container)):
+            if(key.lower()==container[i].div.div.text.split(" ")[0].lower()):
+                print("Flipkart Product:",container[i].div.div.text)
+                price = [container1[i].text]
+                print("Flipkart price:",price[0][1:])
+            else:
+                pass
+def flipkartTV(key):
+    for x in range(1,3):
+        my_url ='https://www.flipkart.com/search?q=TV&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page='+str(x)
+        #https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("div",{"class":"_3pLy-c row"})
+        container1 = page_soup.findAll("div",{"class":"_30jeq3 _1_WHN1"})
+        for i in range(len(container)):
+            if(key.lower()==container[i].div.div.text.split(" ")[0].lower()):
+                print("Flipkart Product:",container[i].div.div.text)
+                price = [container1[i].text]
+                print("Flipkart price:",price[0][1:])
+            else:
+                pass
+
+
+def eBayMOBILE(key):
+    for x in range(1,3):
+        my_url='https://www.ebay.com/sch/i.html?_from=R40&_nkw=mobiles&_sacat=0&_pgn='+str(x)
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("h3",{"class":"s-item__title"})
+        container1 = page_soup.findAll("span",{"class":"s-item__price"})
+        flag = True
+        for i in range(len(container)-1):
+            if(key.lower()==container[i].text.split(" ")[0].lower()):
+                flag = False
+                print("EBay Product:",container[i].text)
+                print("EBay price:",container1[i].text)
+            else:
+                pass
+        if flag == True:
+             print("No Mobiles Found with the given Product in eBay: ",key)
+             break
+def eBayTV(key):
+    for x in range(1,3):
+        my_url='https://www.ebay.com/sch/i.html?_from=R40&_nkw=tv&_sacat=0&_pgn='+str(x)
+        uClient = uReq(my_url)
+        page_html = uClient.read()
+        uClient.close()
+        page_soup = soup(page_html, "html.parser")
+        container = page_soup.findAll("h3",{"class":"s-item__title"})
+        container1 = page_soup.findAll("span",{"class":"s-item__price"})
+        flag = True
+        for i in range(len(container)-1):
+            if(key.lower()==container[i].text.split(" ")[0].lower()):
+                flag = False
+                print("EBay Product:",container[i].text)
+                print("EBay price:",container1[i].text)
+            else:
+                pass
+        if flag == True:
+            print("No TV's Found with the given Product in eBay: ",key)
+            break
+
+
+cat = input("Enter Category:")
+if(cat=="Mobiles"):
+    key = input("Enter Product Name:")
+    flipkartMOBILE(key)
+    paytmMallMOBILE(key)
+    eBayMOBILE(key)
+if(cat=="TV"):
+    key = input("Enter Product Name:")
+    flipkartTV(key)
+    paytamMallTV(key)
+    eBayTV(key)
